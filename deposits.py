@@ -4,7 +4,7 @@ from aiogram.types import BotCommand
 from environs import Env
 from create_bot import bot, dp
 from data_base.base import db_connect
-from handlers import user_handl, other_handl
+from handlers import user_handl, other_handl, profile
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from handlers import apsheduler
 
@@ -45,6 +45,7 @@ async def main():
 
     # # Регистриуем роутеры в диспетчере
     dp.include_router(user_handl.router)
+    dp.include_router(profile.router)
     # dp.include_router(admin_handlers.router)
     dp.include_router(other_handl.router)
 
