@@ -5,6 +5,8 @@ from environs import Env
 from create_bot import bot, dp
 from data_base.base import db_connect
 from handlers import user_handl, other_handl
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from handlers import apsheduler
 
 env = Env()
 
@@ -37,10 +39,15 @@ async def main():
     # Подключаемся к базе данных
     await db_connect()
 
+    # scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
+    # scheduler.add_job(apsheduler.warehouse_add, trigger='interval', seconds=5, kwargs={'bot':bot})
+    # scheduler.start()
+
     # # Регистриуем роутеры в диспетчере
     dp.include_router(user_handl.router)
     # dp.include_router(admin_handlers.router)
     dp.include_router(other_handl.router)
+
 
     # Пропускаем накопившиеся апдейты и запускаем polling
     dp.startup.register(set_main_menu)

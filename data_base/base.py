@@ -53,7 +53,7 @@ async def db_users_add(user_id, login):
         conn = await asyncpg.connect(user=env('user'),  password=env('password'), database=env('db_name'), host=env('host'))
         await conn.execute('''INSERT INTO users(user_id, login, name_deposit, sum_plumber, sum_working, sum_specialist, 
                                                 sum_engineer, sum_manager, volume_warehouse, full_warehouse, rating, pg) 
-                                                VALUES($1, $2, $3, 0, 0, 0, 0, 0, 0, 0, 0, 0)''',
+                                                VALUES($1, $2, $3, 0, 0, 0, 0, 0, 1000, 0, 0, 0)''',
                                                 user_id, login, LEXICON_MINES['natural_gas'])
     except Exception as _ex:
         print('[INFO] Error ', _ex)
