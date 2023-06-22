@@ -25,6 +25,6 @@ async def process_start_command(message: Message):
                               f'<b><u>Заполненность склада:</u></b> {user["full_warehouse"]/user["volume_warehouse"]*100} %\n'
                               f'<b><u>Рейтинг:</u></b> {user["rating"]}', reply_markup=create_kb_menu(user['name_deposit']))
 
-    # scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
-    # scheduler.add_job(apsheduler.warehouse_add, trigger='interval', seconds=10, kwargs={'bot' : bot, 'message': message})
-    # scheduler.start()
+    scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
+    scheduler.add_job(apsheduler.warehouse_add, trigger='interval', seconds=10, kwargs={'message': message})
+    scheduler.start()

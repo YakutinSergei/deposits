@@ -3,7 +3,8 @@ from aiogram.filters import CommandStart, Text
 from aiogram.types import Message, CallbackQuery
 
 from create_bot import bot
-from data_base.base import db_users_add, db_user, mines_user, name_mines_up, user_balanc_up, user_price_mines
+from data_base.base import db_users_add, db_user, mines_user, name_mines_up, user_balanc_up, user_price_mines, \
+    workers_user
 
 from keyboards.user_kb import create_inline_kb, create_kb_menu
 from lexicon.lexicon_ru import LEXICON_MINES, LEXICON_PROFILE
@@ -16,6 +17,7 @@ router: Router = Router()
                            LEXICON_MINES['coal_open'], LEXICON_MINES['oil_open'], LEXICON_MINES['gold_open']]))
 async def mines_choice(message:Message):
     mines = await mines_user(message.from_user.id)
+    await workers_user(message.from_user.id)
     await bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
     await bot.send_message(text='Выбирите месторождение', chat_id= message.from_user.id,
                            reply_markup=create_inline_kb(1, 'mines_choice_', mines[0]['name'],
@@ -83,7 +85,6 @@ async def mines_selection(callback: CallbackQuery):
                                         chat_id=callback.from_user.id, message_id=callback.message.message_id,
                                         reply_markup=create_inline_kb(1, f'shop_{callback.data.split("_")[-1]}_',
                                                                       '🔑Открыть', '🔙Отмена'))
-
 
 @router.callback_query(Text(startswith='shop_'))
 async def mines_buy(callback: CallbackQuery):
